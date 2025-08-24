@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PhishGuard - Threat Detection</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        @keyframes gradientAnimation {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(-45deg, #0f0c29, #302b63, #24243e);
+            background-size: 400% 400%;
+            animation: gradientAnimation 15s ease infinite;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            color: #f0f0f0;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 500px;
+            padding: 40px;
+            text-align: center;
+            
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(7px);
+            -webkit-backdrop-filter: blur(7px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 25px;
+            letter-spacing: 1.5px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        h2 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #ddd;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            padding-bottom: 10px;
+        }
+
+        h2 .fas {
+            margin-right: 10px;
+            color: #a78bfa;
+        }
+        
+        form {
+            text-align: left;
+            margin-bottom: 30px;
+        }
+
+        label {
+            display: block;
+            font-weight: 400;
+            color: #ccc;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+        }
+
+        input[type="text"], input[type="file"] {
+            width: 100%;
+            padding: 12px 15px;
+            font-size: 1rem;
+            font-family: 'Poppins', sans-serif;
+            color: #fff;
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            margin-bottom: 15px;
+        }
+
+        input[type="file"]::file-selector-button {
+            font-family: 'Poppins', sans-serif;
+            background: #a78bfa;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-right: 10px;
+            transition: background-color 0.3s ease;
+        }
+
+        input[type="file"]::file-selector-button:hover {
+            background: #8b5cf6;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #a78bfa;
+            box-shadow: 0 0 15px rgba(167, 139, 250, 0.5);
+        }
+        
+        button[type="submit"] {
+            font-family: 'Poppins', sans-serif;
+            background: #8b5cf6;
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            margin-top: 5px;
+        }
+        
+        button[type="submit"]:hover {
+            background: #7c3aed;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(124, 58, 237, 0.4);
+        }
+
+        button .fas {
+            margin-right: 8px;
+        }
+        
+        .info {
+            font-size: 0.8rem;
+            color: #bbb;
+            margin-top: 10px;
+            padding: 15px;
+            background-color: rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>THREAT DETECTION</h1>
+ 
+        <h2><i class="fas fa-exclamation-triangle"></i>malicious files</h2>
+        <form action="/scam/" method="POST" enctype="multipart/form-data">
+            <label for="file-upload"><strong> Upload a file</strong></label>
+            <input id="file-upload" type="file" name="file" required><br>
+            <button type="submit"><i class="fas fa-upload scan-icon"></i>Analyze</button>
+        </form>
+
+        <h2><i class="fas fa-link"></i>URL Threat Detection</h2>
+        <form method="POST" action="/predict">
+            <label for="url">Enter URL</label>
+            <input id="url" type="text" name="url" required>
+            <button type="submit"><i class="fas fa-search"></i>Classify</button>
+        </form>
+        
+        <!-- THIS IS THE NEW CODE BLOCK THAT DISPLAYS THE RESULT -->
+        {% if message %}
+            <p style="color: #ff6b6b; font-weight: bold; margin-top: 15px;">{{ message }}</p>
+        {% endif %}
+
+        {% if extracted_text %}
+            <div class="result-box" style="text-align: left; margin-top: 30px; padding: 15px; border-radius: 8px; background-color: rgba(0,0,0,0.2);">
+                <h3 style="margin-bottom: 10px; color: #a78bfa;">Extracted Text:</h3>
+                <pre style="white-space: pre-wrap; word-wrap: break-word; font-family: monospace; color: #f0f0f0;">{{ extracted_text }}</pre>
+            </div>
+        {% endif %}
+        <!-- END OF NEW CODE BLOCK -->
+
+        <div class="info">
+            <p>This tool analyzes files and URLs for potential phishing threats. Upload a file or paste a URL to check for security risks.</p>
+        </div>
+    </div>
+
+    <script>
+        // You can add your showSpinner function logic here if needed
+        function showSpinner(formId, spinnerId) {
+            console.log(`Submitting form: ${formId}.`);
+        }
+    </script>
+</body>
+</html>
