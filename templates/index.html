@@ -165,13 +165,6 @@
             <button type="submit"><i class="fas fa-upload scan-icon"></i>Analyze</button>
         </form>
 
-        <h2><i class="fas fa-link"></i>URL Threat Detection</h2>
-        <form method="POST" action="/predict">
-            <label for="url">Enter URL</label>
-            <input id="url" type="text" name="url" required>
-            <button type="submit"><i class="fas fa-search"></i>Classify</button>
-        </form>
-        
         <!-- THIS IS THE NEW CODE BLOCK THAT DISPLAYS THE RESULT -->
         {% if message %}
             <p style="color: #ff6b6b; font-weight: bold; margin-top: 15px;">{{ message }}</p>
@@ -184,6 +177,22 @@
             </div>
         {% endif %}
         <!-- END OF NEW CODE BLOCK -->
+
+        <h2><i class="fas fa-link"></i>URL Threat Detection</h2>
+        <form method="POST" action="/predict">
+            <label for="url">Enter URL</label>
+            <input id="url" type="text" name="url" required>
+            <button type="submit"><i class="fas fa-search"></i>Classify</button>
+        </form>
+
+        {% if predicted_class %}
+            <div class ='result-box' style="text-align: left; margin-top: 30px; padding: 15px; border-radius: 8px; background-color: rgba(0,0,0,0.2);">
+                <h3 style="margin-bottom: 10px; color: #a78bfa;">URL Analysis Result:</h3>
+                <pre style="white-space: pre-wrap; word-wrap: break-word; font-family: monospace; color: #f0f0f0;">{{ url_details }}</pre>
+            <p style="color: #ff6b6b; font-weight: bold; margin-top: 15px;">The URL is classified as: {{ predicted_class }}</p>
+        {% endif %}
+        
+        
 
         <div class="info">
             <p>This tool analyzes files and URLs for potential phishing threats. Upload a file or paste a URL to check for security risks.</p>

@@ -34,6 +34,38 @@ def predict_fake_or_real_email_content(text):
         response = model .generate_content(prompt)
         return response.text.strip() 
 
+def url_detection(url):
+        prompt = f"""
+        you are an expert in identifying scam urls and phishing websites , analyse the following url 
+
+        -**Legitimate** (Authentic, safe website)
+        -**Phishing** (Fraudulent website, or suspicious website)
+        -**Malware** (Malicious website, or harmful website)
+        -**defacement** (Hacked website, or compromised website)
+        -**spam** (Spammy website, or unwanted website)
+
+        for eg
+        -**Legitimate** : https://www.google.com , https://www.wikipedia.org
+        -**Phishing** : http://secure-login-paypal.com , http://update-accounts.com     
+        -**Malware** : http://malicious-site.com , http://dangerous-download.com , "http://free-gift-cards.com"
+        -**defacement** : http://hacked-website.com , http://compromised-site.com
+        -**spam** : http://spammy-site.com , http://unwanted-offers.com 
+
+        etc
+
+        for the following url 
+        {url}
+
+        return a clear message indicating whether this url is legitimate or phishing 
+
+        only return classification message and nothing else
+        note: do not return empty or null response
+        """
+
+
+        response = model .generate_content(prompt)
+        return response.text.strip()
+
 #routes 
 @app.route("/")
 def index():
@@ -58,6 +90,16 @@ def detect_scam():
         return render_template("index.html", message=message)
 
 
+@app.route("/predict", methods=["POST"])
+def predict_url():
+        if request.method == "POST":
+                url = request.form.get("url", "").strip()
+                
+                if not url.startswith(("http://", "https://")):
+                        return render_template("index.html", message="Invalid URL. Please enter a valid URL starting with http:// or https://")
+                
+                classification = url_detection(url)
+                return render_template("index.html", predicted_class=classification)
 #python main
 
 if __name__ == "__main__":
